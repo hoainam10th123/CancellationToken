@@ -21,7 +21,7 @@ public async Task<IActionResult> SomeLongTask(CancellationToken cancellationToke
 }
 ```
 
-```typespript
+```javascript
 import axios from "axios";
 
 const controller = new AbortController();
