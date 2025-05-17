@@ -41,3 +41,47 @@ setTimeout(() => {
   controller.abort();
 }, 3000);
 ```
+
+```javascript
+let controller: AbortController = new AbortController();
+return (
+        <>
+            <div style={{ marginTop: 10 }}>
+                <Button
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={() => {
+                        if (!controller.signal.aborted) {
+                            axios.get("http://localhost:5013/Heavy/long-task", {
+                                signal: controller.signal,
+                            })
+                                .then((response) => console.log(response.data))
+                                .catch((error) => {
+                                    if (axios.isCancel(error)) {
+                                        alert("Request bị hủy.");
+                                    }
+                                });
+                        } else {
+                            controller = new AbortController();
+                            axios.get("http://localhost:5013/Heavy/long-task", {
+                                signal: controller.signal,
+                            })
+                                .then((response) => console.log(response.data))
+                                .catch((error) => {
+                                    if (axios.isCancel(error)) {
+                                        alert("Request bị hủy.");
+                                    }
+                                });
+                        }
+                    }
+                    }
+                >Connect </Button>
+
+                <Button onClick={
+                    () => {
+                        controller.abort();
+                    }
+                } >Cancel token</Button>
+        </>
+    )
+```
